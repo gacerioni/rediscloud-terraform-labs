@@ -1,4 +1,4 @@
-# Terraform Configuration for Redis Cloud Database
+# Terraform Configuration for Redis Cloud Database - DOC UNDER CONSTRUCTION - IGNORE IT FOR NOW
 
 This repository contains Terraform configurations for setting up and managing databases in Redis Cloud, utilizing HashiCorp Vault for secrets management.
 
