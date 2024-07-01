@@ -1,0 +1,4 @@
+name,memory,port,password
+db1,1024,12013,password1
+db2,1024,12014,password2
+db3,1024,12015,password2
