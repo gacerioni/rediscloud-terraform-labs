@@ -1,6 +1,13 @@
-# Terraform Configuration for Redis Cloud Database - DOC UNDER CONSTRUCTION - IGNORE IT FOR NOW
+# Terraform Configuration for Redis Cloud Database - DOC UNDER CONSTRUCTION
 
-This repository contains Terraform configurations for setting up and managing databases in Redis Cloud, utilizing HashiCorp Vault for secrets management.
+This repository contains Terraform configurations for setting up and managing databases in Redis Cloud.\
+For this specific use case, a looper that will create multiple Essentials Subscriptions and Redis DBs.
+
+**As you already know, currently, each Essentials Subscription can only have one DB.**
+
+## Tutorial in English
+
+[![Watch the video](https://img.youtube.com/vi/7BuzBFW7wKU/maxresdefault.jpg)](https://www.youtube.com/watch?v=7BuzBFW7wKU)
 
 ## Overview
 
