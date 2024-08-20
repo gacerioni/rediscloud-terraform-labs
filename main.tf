@@ -1,4 +1,6 @@
+/*
 # Read the CSV file using an external data source
+# I am not using it for the use case, but thats a good example on how to loop and create multiple dbs if needed
 data "external" "csv_data" {
   program = ["python3", "${path.module}/read_csv.py", "${path.module}/databases.csv"]
 }
@@ -37,4 +39,32 @@ resource "rediscloud_essentials_database" "self_service_database" {
   password             = each.value["password"]
 
   depends_on = [rediscloud_essentials_subscription.redis_subscription]
+}
+*/
+
+data "rediscloud_subscription" "existing_aws_us_east_1_sub_via_mktplace" {
+  name = "BARCLAYS-PRO-AWS"
+}
+
+
+// The primary database to provision
+resource "rediscloud_subscription_database" "database-pro-gabs" {
+    subscription_id = data.rediscloud_subscription.existing_aws_us_east_1_sub_via_mktplace.id
+    name = "test-db"
+    memory_limit_in_gb = 1
+    data_persistence = "aof-every-write"
+    throughput_measurement_by = "operations-per-second"
+    throughput_measurement_value = 1000
+    replication = true
+
+    modules = [
+        {
+          name = "RedisJSON"
+        }
+    ]
+
+    alert {
+      name = "dataset-size"
+      value = 40
+    }
 }

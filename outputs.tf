@@ -1,3 +1,4 @@
+/*
 output "rediscloud_subscription" {
   value = { for name, sub in rediscloud_essentials_subscription.redis_subscription : name => sub.id }
 }
@@ -24,4 +25,8 @@ output "database_csv_details" {
     port     = db["port"]
     password = db["password"]
   }}
+}
+*/
+output "rediscloud_subscription" {
+  value = data.rediscloud_subscription.existing_aws_us_east_1_sub_via_mktplace.id
 }
