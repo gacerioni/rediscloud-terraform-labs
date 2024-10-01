@@ -1,22 +1,24 @@
 data "rediscloud_subscription" "existing_aws_us_east_1_sub_via_mktplace" {
-  name = "BARCLAYS-PRO-AWS"
+  name = var.subscription_name
+}
+
+
+data "rediscloud_database_modules" "avail_modules" {
 }
 
 
 // The primary database to provision
-resource "rediscloud_subscription_database" "database-pro-gabs" {
+resource "rediscloud_subscription_database" "pro_redis_database" {
     subscription_id = data.rediscloud_subscription.existing_aws_us_east_1_sub_via_mktplace.id
-    name = "test-db"
-    memory_limit_in_gb = 1
-    data_persistence = "aof-every-write"
+    name = var.database_name
+    memory_limit_in_gb = var.memory_limit_in_gb
+    data_persistence = var.data_persistence
     throughput_measurement_by = "operations-per-second"
-    throughput_measurement_value = 1000
-    replication = true
+    throughput_measurement_value = var.throughput_measurement_value
+    replication = var.replication
 
     modules = [
-        {
-          name = "RedisJSON"
-        }
+        for module in var.modules : { name = module }
     ]
 
     alert {

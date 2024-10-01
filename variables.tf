@@ -12,24 +12,43 @@ variable "redis_global_secret_key" {
     sensitive   = true
 }
 
-# USE THIS IF YOU WANT TO USE THE VAULT SECRETS ENGINE
-/*
-variable "vault_full_addr" {
-  description = "The Vault Server used for this Lab."
+variable "subscription_name" {
   type        = string
-  default     = "http://vaultgabs.redisdemo.com:8200"
+  description = "The name of the RedisCloud subscription"
 }
 
-variable "vault_root_token" {
-  description = "The Vault Root Token used for this Lab."
+variable "database_name" {
   type        = string
-  sensitive   = true
+  description = "The name of the RedisCloud database"
+  default     = "test-db"
 }
 
-variable "vault_kv_path_and_key" {
-  description = "The path where the secrets are kept, under a kv v2 engine."
-  type        = string
-  sensitive   = true
-  default = "secret/redis-quintoandar-lab"
+variable "memory_limit_in_gb" {
+  type        = number
+  description = "Memory limit in GB for the database"
+  default     = 1
 }
-*/
+
+variable "data_persistence" {
+  type        = string
+  description = "Data persistence setting"
+  default     = "none"
+}
+
+variable "throughput_measurement_value" {
+  type        = number
+  description = "Throughput measurement in operations per second"
+  default     = 1000
+}
+
+variable "modules" {
+  type        = list(string)
+  description = "List of Redis modules to enable"
+  default     = ["RedisJSON", "RediSearch", "RedisBloom", "RedisTimeSeries"]
+}
+
+variable "replication" {
+  type        = bool
+  description = "Whether or not replication should be enabled"
+  default     = false
+}
