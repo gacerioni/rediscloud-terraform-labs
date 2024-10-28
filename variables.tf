@@ -23,7 +23,7 @@ variable "database_name" {
   default     = "test-db"
 }
 
-variable "memory_limit_in_gb" {
+variable "dataset_size_in_gb" {
   type        = number
   description = "Memory limit in GB for the database"
   default     = 1
@@ -51,4 +51,31 @@ variable "replication" {
   type        = bool
   description = "Whether or not replication should be enabled"
   default     = false
+}
+
+variable "acl_rule_name" {
+  type        = string
+  description = "Lets use Full-Acess for now"
+  default     = "Full-Access"
+}
+
+variable "enable_tls" {
+  type        = bool
+  description = "Enable TLS for the database"
+  default     = false
+}
+
+variable "tags" {
+  type        = map(string)
+  description = "Custom tags for the database"
+  default     = {
+    "market" = "emea"
+  }
+}
+
+variable "user_password" {
+  type        = string
+  description = "Password for the ACL user"
+  sensitive   = true
+  default     = "G4bZ#N3rd0l4!"
 }
