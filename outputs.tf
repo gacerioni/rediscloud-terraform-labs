@@ -55,3 +55,7 @@ output "rediscloud_database_user_password" {
   value       = rediscloud_subscription_database.pro_redis_database.password
   sensitive   = true
 }
+
+output "rediscloud_acl_rule" {
+  value = data.rediscloud_acl_rule.acl_rule.id
+}
