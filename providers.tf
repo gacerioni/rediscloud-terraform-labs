@@ -2,7 +2,7 @@ terraform {
   required_providers {
     rediscloud = {
       source = "RedisLabs/rediscloud"
-      version = "1.8.1"
+      version = "1.9.0"
     }
   }
 }
