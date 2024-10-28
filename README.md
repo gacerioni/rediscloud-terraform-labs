@@ -1,47 +1,95 @@
-# Terraform Configuration for Redis Cloud Database - DOC UNDER CONSTRUCTION
+# Terraform Configuration for Redis Cloud PRO Database in Existing Subscription
 
-This repository contains Terraform configurations for setting up and managing databases in Redis Cloud.\
-For this specific use case, a looper that will create multiple Essentials Subscriptions and Redis DBs.
+This repository contains Terraform configurations for provisioning and managing **Redis Cloud PRO databases within an existing subscription**.
 
-**As you already know, currently, each Essentials Subscription can only have one DB.**
+**The configuration is designed to:**
 
-## Tutorial in English
+- Create a new database in an existing PRO subscription using details provided via input variables.
+- Disable the default user to enhance security.
+- Optionally enforce TLS connections based on configuration.
+- Create a specific user with RBAC ACL for the database.
+- Apply tags for metadata purposes.
 
-[![Watch the video](https://img.youtube.com/vi/7BuzBFW7wKU/maxresdefault.jpg)](https://www.youtube.com/watch?v=7BuzBFW7wKU)
 
 ## Overview
 
-The Terraform setup in this repository is designed to create and manage Redis Cloud database instances securely. It leverages HashiCorp Vault for storing sensitive information like database credentials and API keys.
+The Terraform setup provided here simplifies the creation and management of Redis Cloud PRO databases, including essential security configurations and API integration.\
+It allows for fine-grained control over database settings, user access, and security features such as TLS and RBAC.
 
 ## Prerequisites
 
-- Terraform installed on your machine.
-- Access to a Redis Cloud account.
+- Terraform (or tofu) installed on your machine.
+- Access to an existing Redis Cloud PRO subscription.
+- Redis Cloud API key and secret key.
 
+## Variables (in constant evolution)
+
+**The following input variables can be configured (_easily adjustable for your needs_):**
+
+- `redis_global_api_key`: Your Redis Cloud API key.
+- `redis_global_secret_key`: Your Redis Cloud API secret key.
+- `subscription_name`: The name of the existing Redis Cloud subscription.
+- `database_name`: The name of the new Redis Cloud database to be created.
+- `dataset_size_in_gb`: The dataset size limit in GB for the database.
+- `throughput_measurement_value`: The desired throughput in operations per second.
+- `replication`: Boolean to enable or disable replication (High Availability).
+- `enable_tls`: Boolean to enable or disable TLS for database connections.
+- `user_password`: The password for the specific user created for RBAC ACL.
+- `tags`: A map of tags to associate with the database for metadata purposes.
+- `acl_rule_name`: The name of the ACL rule to apply (e.g., “Full-Access”).
+
+
+## Key Features Configured
+
+- **Disabling the Default User:** Enhances security by removing the default access credentials.
+- **TLS Enforcement:** Optionally enforce TLS for secure connections to the database.
+- **RBAC and ACL Configuration:** Creates a specific user and role with defined ACLs for controlled access to the database.
+- **Tagging:** Allows you to apply custom tags for better resource organization and metadata management.
 
 ## Usage
 
-To use this Terraform configuration, follow these steps:
+**To use this Terraform configuration, follow these steps:**
 
-1. Initialize Terraform:
+1.	Clone the Repository and go to our current long-lived branch (I will fix this soon - I hate long lived branches lol):
+```bash
+git clone https://github.com/gacerioni/rediscloud-terraform-essentials-db-creator.git
+cd rediscloud-terraform-essentials-db-creator
+git checkout existing_pro_sub
+```
 
-    ```bash
-    terraform init
-    ```
+2.	Create a `terraform.tfvars` File:
+```bash
+redis_global_api_key        = "your-api-key"
+redis_global_secret_key     = "your-secret-key"
+subscription_name           = "existing-subscription-name"
+database_name               = "your-database-name"
+dataset_size_in_gb          = 0.5
+throughput_measurement_value= 500
+replication                 = false
+enable_tls                  = true
+user_password               = "your-secure-password"
+tags = {
+  environment = "dev"
+  project     = "my-project"
+  owner       = "gabs-the-creator"
+}
+acl_rule_name               = "Full-Access"
+```
 
-2. Create a plan:
+3.	Initialize Terraform and do the magic:
+```bash
+terraform init
+terraform plan
+terraform apply
+<...>
+terraform destroy
+```
 
-    ```bash
-    terraform plan -var-file="environments/dev/terraform.tfvars"
-    ```
+## Security Note
 
-3. Apply the configuration:
+- **Sensitive Variables:** Ensure that sensitive information like redis_global_api_key, redis_global_secret_key, and user_password are stored securely. Do not commit these to version control.
+- **State File Security:** Be cautious with the Terraform state file (terraform.tfstate), as it may contain sensitive information.
 
-    ```bash
-    terraform apply -var-file="environments/dev/terraform.tfvars"
-    ```
-
-This sequence of commands initializes Terraform, creates an execution plan based on your configuration, and applies that plan to set up your Redis Cloud database instances as defined.
 
 ## Contributing
 
