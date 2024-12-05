@@ -1,29 +1,66 @@
-# Data sources
-data "rediscloud_subscription" "existing_aws_us_east_1_sub_via_mktplace" {
-  name = var.subscription_name
+# Data Source - Payment Method
+data "rediscloud_payment_method" "card" {
+  card_type = "Visa"
 }
 
-data "rediscloud_database_modules" "avail_modules" {}
+# Data Source - AWS Regions
+data "rediscloud_regions" "aws_available_regions" {
+  provider_name = "AWS"
+}
 
-data "rediscloud_acl_rule" "acl_rule" {
-  name = var.acl_rule_name  # Allows for variable rule usage
+# Create Redis Cloud Pro Subscription
+resource "rediscloud_subscription" "pro_subscription" {
+  name              = var.subscription_name
+  payment_method    = "credit-card"
+  payment_method_id = data.rediscloud_payment_method.card.id
+  memory_storage    = "ram"
+  redis_version     = "7.2"
+
+  cloud_provider {
+    provider = "AWS"  # AWS as the cloud provider
+    region {
+      region                       = var.region
+      multiple_availability_zones  = true
+      networking_deployment_cidr   = var.networking_deployment_cidr
+      preferred_availability_zones = var.preferred_availability_zones
+    }
+  }
+
+  # Creation Plan - Defines initial database for optimized hardware
+  creation_plan {
+    dataset_size_in_gb           = var.dataset_size_in_gb
+    quantity                     = 1
+    replication                  = var.replication
+    throughput_measurement_by    = "operations-per-second"
+    throughput_measurement_value = var.throughput_measurement_value
+    modules                      = var.modules
+  }
+
+  maintenance_windows {
+    mode = "manual"
+    window {
+      start_hour       = 2
+      duration_in_hours = 4
+      days             = ["Sunday"]
+    }
+  }
 }
 
 # Database Provisioning
 resource "rediscloud_subscription_database" "pro_redis_database" {
-  subscription_id            = data.rediscloud_subscription.existing_aws_us_east_1_sub_via_mktplace.id
+  subscription_id            = rediscloud_subscription.pro_subscription.id
   name                       = var.database_name
   dataset_size_in_gb         = var.dataset_size_in_gb
   data_persistence           = var.data_persistence
   throughput_measurement_by  = "operations-per-second"
   throughput_measurement_value = var.throughput_measurement_value
   replication                = var.replication
-  enable_default_user        = false  # Disable default user as per requirement
-  enable_tls                 = var.enable_tls  # Boolean variable for TLS
-  tags                       = var.tags  # String map of tags
+  enable_default_user        = false
+  enable_tls                 = var.enable_tls
+  tags                       = var.tags
 
   modules = [
-      for module in var.modules : { name = module }
+    for module in var.modules : { name = module }
   ]
 
   alert {
@@ -32,27 +69,25 @@ resource "rediscloud_subscription_database" "pro_redis_database" {
   }
 }
 
-# ACL Role Creation after Database Provisioning
+# ACL Role Creation
 resource "rediscloud_acl_role" "acl_role" {
   name = "${var.database_name}-role"
   rule {
-    name = data.rediscloud_acl_rule.acl_rule.name
+    name = var.acl_rule_name
     database {
-      subscription = data.rediscloud_subscription.existing_aws_us_east_1_sub_via_mktplace.id
+      subscription = rediscloud_subscription.pro_subscription.id
       database     = rediscloud_subscription_database.pro_redis_database.db_id
     }
   }
 
-  # Ensure role creation happens after database is ready
   depends_on = [rediscloud_subscription_database.pro_redis_database]
 }
 
-# ACL User Creation after Role Creation
+# ACL User Creation
 resource "rediscloud_acl_user" "acl_user" {
   name     = "${var.database_name}-user"
   role     = rediscloud_acl_role.acl_role.name
-  password = var.user_password  # Secure variable or secret for password
+  password = var.user_password
 
-  # Ensure user is created after role setup
   depends_on = [rediscloud_acl_role.acl_role]
 }
