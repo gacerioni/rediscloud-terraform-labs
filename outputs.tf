@@ -2,9 +2,9 @@ output "rediscloud_payment_method_card_data" {
   value = data.rediscloud_payment_method.card
 }
 
-output "rediscloud_aws_available_regions" {
-  value = data.rediscloud_regions.aws_available_regions
-}
+#output "rediscloud_aws_available_regions" {
+#  value = data.rediscloud_regions.aws_available_regions
+#}
 
 output "rediscloud_subscription_id" {
   description = "The ID of the Redis Cloud subscription"
@@ -59,6 +59,16 @@ output "rediscloud_database_memory_limit_in_gb" {
 output "rediscloud_database_throughput_measurement" {
   description = "The throughput measurement value in operations-per-second"
   value       = rediscloud_subscription_database.pro_redis_database.throughput_measurement_value
+}
+
+output "rediscloud_database_username" {
+  description = "The username for the Redis Cloud database"
+  value       = rediscloud_acl_user.acl_user.name
+}
+output "rediscloud_database_password" {
+  description = "The password for the Redis Cloud database (DEBUG)"
+  value       = rediscloud_acl_user.acl_user.password
+  sensitive   = true
 }
 
 #output "all_regions" {
