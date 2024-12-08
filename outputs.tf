@@ -71,6 +71,16 @@ output "rediscloud_database_password" {
   sensitive   = true
 }
 
+output "rediscloud_peering_status" {
+  description = "The status of the Redis Cloud VPC peering connection"
+  value       = rediscloud_subscription_peering.aws_peering.status
+}
+
+output "aws_vpc_peering_id" {
+  description = "The ID of the AWS VPC peering connection"
+  value       = rediscloud_subscription_peering.aws_peering.aws_peering_id
+}
+
 #output "all_regions" {
 #  value = data.rediscloud_regions.all_available_regions.regions
 #}

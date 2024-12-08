@@ -98,3 +98,6 @@ Contributions to this project are welcome. Please ensure to follow the standard 
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
+
+
+redis-cli --tls -h redis-19868.c35329.us-east-1-mz.ec2.cloud.rlrcp.com -p 19868 --user gabs-db-user --pass "Secret).42"

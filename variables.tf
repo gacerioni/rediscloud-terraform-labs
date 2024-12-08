@@ -12,6 +12,20 @@ variable "redis_global_secret_key" {
   sensitive   = true
 }
 
+variable "aws_access_key" {
+  description = "AWS Access Key for managing VPC peering connections"
+  type        = string
+  sensitive   = true
+  default     = null
+}
+
+variable "aws_secret_key" {
+  description = "AWS Secret Key for managing VPC peering connections"
+  type        = string
+  sensitive   = true
+  default     = null
+}
+
 variable "subscription_name" {
   description = "The name of the RedisCloud subscription"
   type        = string
@@ -77,7 +91,7 @@ variable "user_password" {
   description = "Password for the ACL user"
   type        = string
   sensitive   = true
-  default     = "G4bZ#N3rd0l4!"
+  default     = "G4bZ#N3rd0l4.!"
 }
 
 variable "region" {
@@ -98,4 +112,28 @@ variable "networking_deployment_cidr" {
   description = "CIDR block for the subscription networking deployment"
   type        = string
   default     = "10.123.42.0/24"
+}
+
+variable "aws_account_id" {
+  description = "AWS Account ID where the VPC to be peered lives"
+  type        = string
+  default     = "735486936198"
+}
+
+variable "aws_vpc_id" {
+  description = "The AWS VPC ID to be peered with Redis Cloud"
+  type        = string
+  default     = "vpc-0ae08c2573e50aa42"
+}
+
+variable "consumer_cidr" {
+  description = "The CIDR range of the VPC to be peered"
+  type        = string
+  default     = "10.0.0.0/24"
+}
+
+variable "vpc_peering_region" {
+  description = "The AWS region where the subscription and peering are created"
+  type        = string
+  default     = "us-east-1"
 }

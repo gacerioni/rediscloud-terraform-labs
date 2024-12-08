@@ -91,3 +91,18 @@ resource "rediscloud_acl_user" "acl_user" {
 
   depends_on = [rediscloud_acl_role.acl_role]
 }
+
+# AWS VPC Peering Request
+resource "rediscloud_subscription_peering" "aws_peering" {
+  subscription_id = rediscloud_subscription.pro_subscription.id
+  region          = var.vpc_peering_region
+  aws_account_id  = var.aws_account_id
+  vpc_id          = var.aws_vpc_id
+  vpc_cidr        = var.consumer_cidr
+}
+
+# AWS VPC Peering Accepter
+resource "aws_vpc_peering_connection_accepter" "aws_peering_accepter" {
+  vpc_peering_connection_id = rediscloud_subscription_peering.aws_peering.aws_peering_id
+  auto_accept               = true
+}

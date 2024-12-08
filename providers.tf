@@ -4,6 +4,10 @@ terraform {
       source = "RedisLabs/rediscloud"
       version = "1.9.0"
     }
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 4.0"
+    }
   }
 }
 
@@ -19,6 +23,15 @@ provider "rediscloud" {
   api_key = var.redis_global_api_key
   secret_key = var.redis_global_secret_key
 
+}
+
+
+provider "aws" {
+  region = var.vpc_peering_region
+
+  # Use default credentials or provide access keys explicitly
+  access_key = var.aws_access_key
+  secret_key = var.aws_secret_key
 }
 
 # USE THIS IF YOU WANT TO USE THE VAULT SECRETS ENGINE
