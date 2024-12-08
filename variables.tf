@@ -69,7 +69,7 @@ variable "tags" {
   type        = map(string)
   description = "Custom tags for the database"
   default     = {
-    "market" = "emea"
+    "market" = "brazil"
   }
 }
 
@@ -77,5 +77,5 @@ variable "user_password" {
   type        = string
   description = "Password for the ACL user"
   sensitive   = true
-  default     = "G4bZ#N3rd0l4!"
+  default     = "G4bZ.N3rd0l4!"
 }

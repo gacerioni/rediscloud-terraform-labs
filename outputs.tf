@@ -59,3 +59,8 @@ output "rediscloud_database_user_password" {
 output "rediscloud_acl_rule" {
   value = data.rediscloud_acl_rule.acl_rule.id
 }
+
+output "acl_user_name" {
+  description = "The username for the Redis Cloud ACL user"
+  value       = rediscloud_acl_user.acl_user.name
+}
