@@ -31,6 +31,12 @@ variable "subscription_name" {
   type        = string
 }
 
+variable "cloud_account_id" {
+  description = "Cloud account ID for the AWS provider"
+  type        = string
+  default = "6415" # Use the correct value for your account
+}
+
 variable "database_name" {
   description = "The name of the RedisCloud database"
   type        = string
