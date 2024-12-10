@@ -14,7 +14,7 @@ resource "rediscloud_subscription" "pro_subscription" {
   payment_method    = "credit-card"
   payment_method_id = data.rediscloud_payment_method.card.id
   memory_storage    = "ram"
-  redis_version     = "7.2"
+  redis_version     = "7.4"
 
   cloud_provider {
     provider = "AWS"  # AWS as the cloud provider
