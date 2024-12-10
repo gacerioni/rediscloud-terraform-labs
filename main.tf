@@ -18,6 +18,7 @@ resource "rediscloud_subscription" "pro_subscription" {
 
   cloud_provider {
     provider = "AWS"  # AWS as the cloud provider
+    cloud_account_id = var.cloud_account_id
     region {
       region                       = var.region
       multiple_availability_zones  = true
