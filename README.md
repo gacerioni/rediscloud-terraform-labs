@@ -92,7 +92,7 @@ terraform destroy
 
 *⚠️ Important:*
 - Replace your-api-key and your-secret-key with your Redis Cloud API credentials.
-- *AWS API* is only needed because I demo a VPC Peering, and accepting the Peering Request is a required step for our TF Provider logic.
+- **AWS API** is only needed because I demo a VPC Peering, and accepting the Peering Request is a required step for our TF Provider logic.
   - If you don't want this, just comment out lines [#L97](https://github.com/gacerioni/rediscloud-terraform-labs/blob/tf_pro_workshop/main.tf#L97) - #L109 (the tail of the `main.tf` file)
 - Use a meaningful subscription_name and database_name relevant to your project.
 - Set `cloud_account_id = 1` to use Redis Managed AWS Acc and VPC. Use the [https://api.redislabs.com/v1/cloud-accounts](https://api.redislabs.com/v1/swagger-ui/index.html) if you have your own *Cloud Account* in Redis Cloud.
