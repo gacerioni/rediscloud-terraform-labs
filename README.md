@@ -90,7 +90,7 @@ terraform apply
 terraform destroy
 ```
 
-*⚠️ Important:*
+**⚠️ Important: there are some optional complexity that you can avoid.**
 - Replace your-api-key and your-secret-key with your Redis Cloud API credentials.
 - **AWS API** is only needed because I demo a VPC Peering, and accepting the Peering Request is a required step for our TF Provider logic.
   - If you don't want this, just comment out lines [#L97](https://github.com/gacerioni/rediscloud-terraform-labs/blob/tf_pro_workshop/main.tf#L97) - #L109 (the tail of the `main.tf` file)
