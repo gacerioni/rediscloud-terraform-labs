@@ -14,7 +14,7 @@ resource "rediscloud_subscription" "pro_subscription" {
   payment_method    = "credit-card"
   payment_method_id = data.rediscloud_payment_method.card.id
   memory_storage    = "ram"
-  redis_version     = "7.2"
+  redis_version     = "7.4"
 
   cloud_provider {
     provider = "AWS"  # AWS as the cloud provider
@@ -66,7 +66,8 @@ resource "rediscloud_subscription_database" "pro_redis_database" {
 
   alert {
     name  = "dataset-size"
-    value = 40
+    #value = 80
+    value = var.dataset_size_alert_percentage
   }
 }
 

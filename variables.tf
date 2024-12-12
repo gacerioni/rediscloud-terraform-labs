@@ -143,3 +143,9 @@ variable "vpc_peering_region" {
   type        = string
   default     = "us-east-1"
 }
+
+variable "dataset_size_alert_percentage" {
+  description = "Alert threshold for dataset size in percentage"
+  type        = number
+  default     = 80
+}
